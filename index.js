@@ -4,9 +4,11 @@
     const SEPARATOR = '\t';
     const NEWLINE = '\r\n';
 
-    filepicker.addEventListener('change', fileSelected, false);
+    filepicker.addEventListener('change', fileSelected);
+    copybutton.addEventListener('click', copyToClipboard);
 
     function fileSelected(e) {
+        output.value = '';
         const fileObject = e.target.files[0];
         handleFile(fileObject);
     }
@@ -37,4 +39,18 @@
     function prependFields(header) {
         output.value = header.join(SEPARATOR) + NEWLINE + output.value;
     }
+
+    function copyToClipboard(e) {
+        output.select();
+        try {
+            const result = document.execCommand('copy');
+            if (!result) {
+                throw new Error('Could not copy to clipboard');
+            }
+        }
+        catch (err) {
+            // TODO: Notify the user that copying failed.
+        }
+    }
+
 })();
