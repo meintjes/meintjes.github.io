@@ -1,11 +1,18 @@
 (function() {
     'use strict';
 
+    const output = document.getElementById('output');
+    const filePicker = document.getElementById('filepicker');
+    const copyButton = document.getElementById('copybutton');
+    const copyLabel = document.getElementById('copylabel');
+
     const SEPARATOR = '\t';
     const NEWLINE = '\r\n';
 
-    filepicker.addEventListener('change', fileSelected);
-    copybutton.addEventListener('click', copyToClipboard);
+    filePicker.addEventListener('change', fileSelected);
+    copyButton.addEventListener('click', copyToClipboard);
+
+    let loadedFile = false;
 
     function fileSelected(e) {
         output.value = '';
@@ -26,10 +33,17 @@
             parser.end();
 
             prependFields(parser.getHeader());
+            doneParsing();
         }
 
         // TODO: Read in parts instead of operating on the whole file.
         reader.readAsText(fileObject);
+    }
+
+    function doneParsing() {
+        loadedFile = true;
+        output.classList.remove('output-collapsed');
+        copyLabel.classList.remove('btn-disabled');
     }
 
     function recordParsed(record) {
@@ -41,15 +55,20 @@
     }
 
     function copyToClipboard(e) {
+        if (!loadedFile) {
+            return;
+        }
+
         output.select();
         try {
             const result = document.execCommand('copy');
             if (!result) {
-                throw new Error('Could not copy to clipboard');
+                throw new Error();
             }
+            copyButton.classList.replace('btn-error', 'btn-success');
         }
         catch (err) {
-            // TODO: Notify the user that copying failed.
+            copyButton.classList.add('btn-error', 'btn-success');
         }
     }
 

@@ -8,7 +8,7 @@ function Parser(recordParsedCallback) {
     'use strict';
 
     const newRecordRegex = /^Document (\d+) of \d+$/g;
-    const fieldRegex = /^([A-Z_\/]*)(.+)$/;
+    const fieldRegex = /^([^\s]*)(.+)$/;
 
     Parser.prototype.line = function(line) {
         const newRecordMatch = newRecordRegex.exec(line);
@@ -42,8 +42,6 @@ function Parser(recordParsedCallback) {
     }
 
     Parser.prototype._setCurrentField = function(name) {
-        name = name.trim();
-
         let index = this._fields.indexOf(name);
         if (index === -1) {
             index = this._fields.length;

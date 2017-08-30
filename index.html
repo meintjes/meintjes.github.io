@@ -7,12 +7,17 @@
     </head>
     <body>
         <div class="main">
-            <p>Upload a file in text format. The resulting output can be saved as a .tsv file and imported into Excel.</p>
-            <div class="controls">
-                <input type="file" id="filepicker" class="filepicker"/>
-                <button id="copybutton" class="btn" type="button">Copy to clipboard</button>
+            <p class="flex">Upload a file in text format. The resulting output can be saved as a .tsv file and imported into Excel.</p>
+            <div class="flex">
+                <label class="btn">
+                    <input type="file" id="filepicker" class="hidden"/>
+                    Pick a file to convert
+                </label><label id="copylabel" class="btn btn-disabled">
+                    <button id="copybutton" type="button" class="hidden"></button>
+                    Copy to clipboard
+                </label>
             </div>
-            <textarea id="output" class="output" readonly></textarea>
+            <textarea id="output" class="output output-collapsed flex" readonly></textarea>
         </div>
 
         <script src="/parser.js"></script>
